@@ -2,6 +2,8 @@
 
 Website pertama saya — satu halaman statis berisi "Hello World".
 
+🔗 Live: https://yoganatha-pranashakti.vercel.app
+
 ## Struktur
 
 - `index.html` — seluruh isi website (HTML + CSS, tanpa build step)
