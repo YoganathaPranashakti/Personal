@@ -16,6 +16,14 @@ Buka file `index.html` di browser, atau jalankan server statis sederhana:
 npx serve .
 ```
 
+## Kredit
+
+Latar belakang kontur topografi diadaptasi dari komponen **Topography Background**
+oleh Elliot Sutton ([@skyleen77](https://21st.dev/@skyleen77)) untuk
+[Animate UI](https://animate-ui.com), dari [21st.dev](https://21st.dev/@skyleen77/components/backgrounds-topography).
+Lisensi asli: MIT with Commons Clause. Versi di sini sudah diporting ke JavaScript
+vanilla (tanpa React/motion) dan diberi tema hijau hutan.
+
 ## Deploy
 
 Website ini di-deploy ke Vercel. Karena hanya berisi file statis, tidak perlu
