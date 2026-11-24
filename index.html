@@ -3,27 +3,154 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#04120c" />
-    <title>Hello World</title>
+    <meta name="theme-color" content="#0b2418" />
+    <meta name="description" content="Personal website of Yoganatha Pranashakti." />
+    <title>Yoganatha Pranashakti</title>
     <style>
-      * {
+      *,
+      *::before,
+      *::after {
         box-sizing: border-box;
       }
 
-      html,
-      body {
-        height: 100%;
-        margin: 0;
+      html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
       }
 
       body {
-        display: grid;
-        place-items: center;
-        overflow: hidden;
+        margin: 0;
+        overflow-x: hidden;
+        background: #061410;
         color: #f3fbf6;
         font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-        /* Hutan: hijau sangat gelap, sedikit bercahaya di tengah */
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ---------- Panel (satu layar penuh per bagian) ---------- */
+      .panel {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 100%;
+        min-height: 100vh;
+        min-height: 100svh;
+        overflow: hidden;
+      }
+
+      .panel__canvas {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .panel__inner {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 1100px;
+        padding: clamp(1.25rem, 5vw, 4rem);
+        text-align: center;
+        pointer-events: none;
+      }
+
+      /* ---------- Hero: langit ---------- */
+      .panel--hero {
+        background: linear-gradient(#245c99 0%, #7fa9c9 62%, #dbe8f2 100%);
+      }
+
+      .hero__inner {
+        will-change: transform, opacity;
+      }
+
+      .eyebrow {
+        margin: 0 0 clamp(0.9rem, 2.4vw, 1.6rem);
+        font-size: clamp(0.78rem, 2.1vw, 1.15rem);
+        font-weight: 600;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.95);
+        text-shadow: 0 2px 22px rgba(6, 32, 58, 0.45);
+        animation: rise-in 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+      }
+
+      .name {
+        margin: 0;
+        font-size: clamp(2.1rem, 8.5vw, 6rem);
+        font-weight: 800;
+        line-height: 1.02;
+        letter-spacing: -0.025em;
+        color: #ffffff;
+        text-shadow: 0 10px 50px rgba(4, 26, 48, 0.45);
+        animation: rise-in 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+      }
+
+      @keyframes rise-in {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      /* ---------- Petunjuk scroll ---------- */
+      .scroll-hint {
+        position: absolute;
+        left: 50%;
+        bottom: clamp(1.1rem, 4vh, 2.5rem);
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.7rem;
+        transform: translateX(-50%);
+        font-size: 0.66rem;
+        font-weight: 600;
+        letter-spacing: 0.32em;
+        text-transform: uppercase;
+        color: rgba(18, 48, 78, 0.6);
+        pointer-events: none;
+      }
+
+      .scroll-hint i {
+        display: block;
+        width: 1px;
+        height: clamp(26px, 5vh, 42px);
+        background: linear-gradient(
+          to bottom,
+          rgba(18, 48, 78, 0.75),
+          rgba(18, 48, 78, 0)
+        );
+        animation: hint-bob 2.4s ease-in-out infinite;
+      }
+
+      @keyframes hint-bob {
+        0%,
+        100% {
+          transform: translateY(-5px);
+          opacity: 0.35;
+        }
+        50% {
+          transform: translateY(5px);
+          opacity: 1;
+        }
+      }
+
+      /* ---------- Awan ---------- */
+      .panel--clouds {
+        background: linear-gradient(#245c99 0%, #b8d4e8 55%, #0b2418 100%);
+      }
+
+      /* ---------- Terrain / kontur ---------- */
+      .panel--terrain {
         background:
+          linear-gradient(to bottom, #0b2418 0%, rgba(11, 36, 24, 0) 20%),
           radial-gradient(
             120vmax 90vmax at 50% 38%,
             #0f2f20 0%,
@@ -33,105 +160,360 @@
           );
       }
 
-      /* Kontur topografi digambar di sini */
-      #topography {
-        position: fixed;
-        inset: 0;
-        display: block;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-      }
-
-      main {
-        position: relative;
-        z-index: 1;
-        padding: 0 1.5rem;
-        text-align: center;
-        pointer-events: none;
-      }
-
-      h1 {
+      .terrain__title {
         margin: 0;
-        font-size: clamp(2.5rem, 10vw, 6rem);
+        font-size: clamp(2.2rem, 8vw, 5.5rem);
         font-weight: 700;
         letter-spacing: -0.02em;
-        background: linear-gradient(100deg, #e8ffd9, #a7f3c4, #4ade80 60%, #22c55e);
+        background: linear-gradient(
+          100deg,
+          #e8ffd9,
+          #a7f3c4,
+          #4ade80 60%,
+          #22c55e
+        );
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
-        filter: drop-shadow(0 6px 40px rgba(34, 197, 94, 0.35));
+        filter: drop-shadow(0 6px 40px rgba(34, 197, 94, 0.3));
       }
 
+      .reveal {
+        opacity: 0;
+        transform: translateY(26px);
+        transition:
+          opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .reveal.is-visible {
+        opacity: 1;
+        transform: none;
+      }
+
+      /* ---------- Layar pendek (HP landscape) ---------- */
+      @media (max-height: 520px) {
+        .name {
+          font-size: clamp(1.6rem, 8.5vh, 3rem);
+        }
+
+        .eyebrow {
+          margin-bottom: 0.6rem;
+          font-size: 0.64rem;
+          letter-spacing: 0.18em;
+        }
+
+        .scroll-hint {
+          display: none;
+        }
+      }
+
+      /* ---------- Preferensi gerak minimal ---------- */
       @media (prefers-reduced-motion: reduce) {
-        h1 {
-          filter: none;
+        html {
+          scroll-behavior: auto;
+        }
+
+        .eyebrow,
+        .name,
+        .scroll-hint i {
+          animation: none;
+        }
+
+        .reveal {
+          opacity: 1;
+          transform: none;
+          transition: none;
         }
       }
     </style>
   </head>
   <body>
-    <canvas id="topography" aria-hidden="true"></canvas>
     <main>
-      <h1>Hello World</h1>
+      <!-- 1. Hero: langit -->
+      <section class="panel panel--hero" id="hero">
+        <canvas class="panel__canvas" data-scene="hero" aria-hidden="true"></canvas>
+        <div class="panel__inner hero__inner">
+          <p class="eyebrow">Welcome to My Personal Website</p>
+          <h1 class="name">Yoganatha Pranashakti</h1>
+        </div>
+        <div class="scroll-hint" aria-hidden="true">
+          <span>Scroll</span>
+          <i></i>
+        </div>
+      </section>
+
+      <!-- 2. Awan -->
+      <section class="panel panel--clouds" id="clouds" aria-label="Clouds">
+        <canvas class="panel__canvas" data-scene="clouds" aria-hidden="true"></canvas>
+      </section>
+
+      <!-- 3. Terrain (kontur topografi) -->
+      <section class="panel panel--terrain" id="terrain">
+        <canvas class="panel__canvas" data-scene="terrain" aria-hidden="true"></canvas>
+        <div class="panel__inner">
+          <h2 class="terrain__title reveal">Hello World</h2>
+        </div>
+      </section>
     </main>
 
     <script>
-      /*
-       * Topography background — port vanilla dari "Topography Background"
-       * oleh Elliot Sutton (@skyleen77) / Animate UI, 21st.dev.
-       * Lisensi asli: MIT with Commons Clause.
-       * https://21st.dev/@skyleen77/components/backgrounds-topography
-       *
-       * Diubah: tema hijau hutan, tanpa dependensi React/motion.
-       */
       (() => {
-        const FEATURE = 280;
-        const RANGE = 0.95;
-        const HILL_RADIUS = 90;
-        const RIPPLE_WIDTH = 60;
-        const LEVELS = 16;
-        const SPEED = 1;
-        const SCALE = 1;
-        const PEAK = 1;
-        const LINE_COLOR = "#6ee7a0";
+        "use strict";
 
-        const PERMUTATION = (() => {
-          const table = Array.from({ length: 256 }, (_, i) => i);
-          let seed = 1013;
-          for (let i = 255; i > 0; i--) {
-            seed = (seed * 16807) % 2147483647;
-            const j = seed % (i + 1);
-            [table[i], table[j]] = [table[j], table[i]];
-          }
-          return Uint8Array.from([...table, ...table]);
-        })();
+        const reduceMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+        const isSmall = window.matchMedia("(max-width: 768px)").matches;
 
-        const VERTEX = `
-attribute vec2 position;
+        /* =========================================================
+         * Helper WebGL
+         * ======================================================= */
+        const VERT = `
+attribute vec2 aPos;
 void main() {
-  gl_Position = vec4(position, 0.0, 1.0);
+  gl_Position = vec4(aPos, 0.0, 1.0);
 }
 `;
 
-        const FRAGMENT = `
+        const NOISE = `
+float hash21(vec2 p) {
+  p = fract(p * vec2(123.34, 456.21));
+  p += dot(p, p + 45.32);
+  return fract(p.x * p.y);
+}
+
+float vnoise(vec2 p) {
+  vec2 i = floor(p);
+  vec2 f = fract(p);
+  vec2 u = f * f * (3.0 - 2.0 * f);
+  float a = hash21(i);
+  float b = hash21(i + vec2(1.0, 0.0));
+  float c = hash21(i + vec2(0.0, 1.0));
+  float d = hash21(i + vec2(1.0, 1.0));
+  return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
+}
+
+float fbm(vec2 p) {
+  float v = 0.0;
+  float a = 0.5;
+  for (int i = 0; i < 5; i++) {
+    v += a * vnoise(p);
+    p = p * 2.03 + 11.7;
+    a *= 0.5;
+  }
+  return v;
+}
+`;
+
+        const scenes = [];
+
+        function compileShader(gl, type, source) {
+          const shader = gl.createShader(type);
+          gl.shaderSource(shader, source);
+          gl.compileShader(shader);
+          if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            console.error(gl.getShaderInfoLog(shader));
+            return null;
+          }
+          return shader;
+        }
+
+        function makeScene(canvas, fragmentSource, uniformNames, options) {
+          const alpha = Boolean(options && options.alpha);
+          const gl = canvas.getContext("webgl", {
+            antialias: false,
+            alpha,
+            premultipliedAlpha: alpha,
+            powerPreference: "high-performance",
+          });
+          if (!gl) {
+            canvas.remove();
+            return null;
+          }
+
+          // dFdx/dFdy butuh extension ini di WebGL 1.
+          if (fragmentSource.indexOf("GL_OES_standard_derivatives") !== -1) {
+            gl.getExtension("OES_standard_derivatives");
+          }
+
+          const vs = compileShader(gl, gl.VERTEX_SHADER, VERT);
+          const fs = compileShader(gl, gl.FRAGMENT_SHADER, fragmentSource);
+          if (!vs || !fs) {
+            canvas.remove();
+            return null;
+          }
+
+          const program = gl.createProgram();
+          gl.attachShader(program, vs);
+          gl.attachShader(program, fs);
+          gl.linkProgram(program);
+          if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+            console.error(gl.getProgramInfoLog(program));
+            canvas.remove();
+            return null;
+          }
+          gl.useProgram(program);
+
+          const buffer = gl.createBuffer();
+          gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+          gl.bufferData(
+            gl.ARRAY_BUFFER,
+            new Float32Array([-1, -1, 3, -1, -1, 3]),
+            gl.STATIC_DRAW,
+          );
+          const aPos = gl.getAttribLocation(program, "aPos");
+          gl.enableVertexAttribArray(aPos);
+          gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+          const u = {};
+          for (const name of ["uRes", "uTime", ...uniformNames]) {
+            u[name] = gl.getUniformLocation(program, name);
+          }
+
+          const scene = {
+            canvas,
+            gl,
+            u,
+            visible: false,
+            time: 0,
+            dirty: true,
+            dpr: 1,
+            w: 0,
+            h: 0,
+          };
+          scenes.push(scene);
+          return scene;
+        }
+
+        function fit(scene) {
+          const rect = scene.canvas.getBoundingClientRect();
+          const w = Math.max(1, Math.round(rect.width));
+          const h = Math.max(1, Math.round(rect.height));
+          const dpr = Math.min(window.devicePixelRatio || 1, isSmall ? 1.5 : 2);
+          if (w === scene.w && h === scene.h && dpr === scene.dpr) return;
+          scene.w = w;
+          scene.h = h;
+          scene.dpr = dpr;
+          scene.canvas.width = Math.round(w * dpr);
+          scene.canvas.height = Math.round(h * dpr);
+          scene.gl.viewport(0, 0, scene.canvas.width, scene.canvas.height);
+          scene.dirty = true;
+        }
+
+        /* =========================================================
+         * 1. Hero — langit cerah realistis
+         * ======================================================= */
+        const HERO_FRAG = `
+precision highp float;
+uniform vec2 uRes;
+uniform float uTime;
+${NOISE}
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / uRes;
+  vec2 p = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;
+  float aspect = uRes.x / uRes.y;
+  float h = clamp(uv.y, 0.0, 1.0);
+
+  // Gradasi langit: biru pekat di atas, pucat di horizon.
+  vec3 zenith  = vec3(0.086, 0.263, 0.478);
+  vec3 middle  = vec3(0.337, 0.573, 0.780);
+  vec3 horizon = vec3(0.859, 0.910, 0.949);
+  vec3 col = mix(horizon, middle, smoothstep(0.0, 0.58, h));
+  col = mix(col, zenith, smoothstep(0.42, 1.0, h));
+
+  // Matahari di kanan atas.
+  vec2 sunUv = vec2(0.68, 0.77);
+  float d = length((uv - sunUv) * vec2(aspect, 1.0));
+  // Cahaya matahari dilepas di kaki langit supaya warnanya rata dan mulus
+  // saat menyambung ke section awan.
+  float sunFade = smoothstep(0.0, 0.18, uv.y);
+  col += vec3(1.0, 0.95, 0.86) * 0.42 * exp(-d * 2.6) * sunFade;
+  col += vec3(1.0, 0.98, 0.94) * (1.0 - smoothstep(0.028, 0.042, d)) * 0.95;
+
+  // Kabut tipis yang bergerak sangat pelan.
+  float haze = fbm(vec2(p.x * 1.1 + uTime * 0.006, p.y * 2.4 - uTime * 0.002));
+  col = mix(col, vec3(0.93, 0.96, 0.99), haze * 0.10 * smoothstep(0.1, 0.85, h));
+
+  // Vignette halus supaya teks terbaca (dilepas di kaki langit agar mulus
+  // menyambung ke section awan).
+  float vignette = smoothstep(0.45, 1.25, length(p * vec2(0.95, 1.0)));
+  col *= 1.0 - 0.14 * vignette * smoothstep(0.0, 0.30, uv.y);
+
+  gl_FragColor = vec4(col, 1.0);
+}
+`;
+
+        /* =========================================================
+         * 2. Awan — volumetrik lembut, melayang pelan
+         * ======================================================= */
+        const CLOUD_FRAG = `
+precision highp float;
+uniform vec2 uRes;
+uniform float uTime;
+${NOISE}
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / uRes;
+  // Skala mengikuti sisi terpendek supaya awan tidak "terlalu dekat"
+  // di layar potret (mobile).
+  vec2 p = (gl_FragCoord.xy - 0.5 * uRes) / min(uRes.x, uRes.y);
+
+  vec3 skyTop = vec3(0.141, 0.361, 0.600);
+  vec3 skyBot = vec3(0.722, 0.831, 0.910);
+  vec3 sky = mix(skyBot, skyTop, smoothstep(0.0, 1.0, uv.y));
+
+  // Awan: noise berlapis + domain warping pelan.
+  vec2 q = vec2(p.x * 1.9, p.y * 2.2);
+  q += vec2(uTime * 0.012, uTime * 0.004);
+  float warp = fbm(q * 0.7 + 2.3);
+  vec2 qw = q + vec2(warp - 0.5, (warp - 0.5) * 0.7) * 1.6;
+
+  float base = fbm(qw);
+  float detail = fbm(qw * 2.6 + 5.1);
+  float n = base * 0.74 + detail * 0.36;
+
+  float cloud = smoothstep(0.46, 0.70, n);
+  // Tidak ada awan di kaki langit (melebur ke terrain), menipis di puncak.
+  cloud *= smoothstep(0.10, 0.34, uv.y);
+  cloud *= 1.0 - 0.6 * smoothstep(0.86, 1.0, uv.y);
+
+  vec3 shade = mix(vec3(0.90, 0.92, 0.95), vec3(1.0, 1.0, 0.99),
+                   smoothstep(0.50, 0.84, n));
+  vec3 col = mix(sky, shade, cloud * 0.95);
+
+  // Bagian bawah melebur ke warna terrain (hijau gelap).
+  col = mix(col, vec3(0.043, 0.141, 0.094), smoothstep(0.30, 0.0, uv.y));
+
+  // Bagian atas melebur ke warna kaki langit hero, supaya batas section mulus.
+  col = mix(col, vec3(0.859, 0.910, 0.949), smoothstep(0.72, 1.0, uv.y));
+
+  gl_FragColor = vec4(col, 1.0);
+}
+`;
+
+        /* =========================================================
+         * 3. Terrain — kontur topografi (port dari 21st.dev)
+         * ======================================================= */
+        const TOPO_FRAG = `
 #extension GL_OES_standard_derivatives : enable
 precision highp float;
 uniform sampler2D permutation;
-uniform vec2 size;
-uniform float dpr;
-uniform float feature;
-uniform float z;
-uniform float step;
-uniform float range;
-uniform float amount;
-uniform float lift;
-uniform float hillRadius;
-uniform vec2 hill;
-uniform vec4 ripples[4];
-uniform float reach;
-uniform float rippleWidth;
-uniform vec3 color;
+uniform vec2 uRes;
+uniform float uDpr;
+uniform float uFeature;
+uniform float uZ;
+uniform float uStep;
+uniform float uRange;
+uniform float uAmount;
+uniform float uLift;
+uniform float uHillRadius;
+uniform vec2 uHill;
+uniform vec4 uRipples[4];
+uniform float uReach;
+uniform float uRippleWidth;
+uniform vec3 uColor;
 
 float perm(float i) {
   return floor(texture2D(permutation, vec2((mod(i, 256.0) + 0.5) / 256.0, 0.5)).r * 255.0 + 0.5);
@@ -176,47 +558,50 @@ float noise(vec3 p) {
 }
 
 void main() {
-  vec2 point = vec2(gl_FragCoord.x, size.y - gl_FragCoord.y) / dpr;
-  vec2 n = point / feature;
-  float value = noise(vec3(n, z)) * 1.1 + noise(vec3(n * 2.1, z * 1.7)) * 0.45;
-  if (lift > 0.0) value += lift * exp(-length(point - hill) / hillRadius);
+  vec2 point = vec2(gl_FragCoord.x, uRes.y - gl_FragCoord.y) / uDpr;
+  vec2 n = point / uFeature;
+  float value = noise(vec3(n, uZ)) * 1.1 + noise(vec3(n * 2.1, uZ * 1.7)) * 0.45;
+  if (uLift > 0.0) value += uLift * exp(-length(point - uHill) / uHillRadius);
   for (int i = 0; i < 4; i++) {
-    vec4 ripple = ripples[i];
+    vec4 ripple = uRipples[i];
     if (ripple.w > 0.5) {
-      float d = length(point - ripple.xy) - ripple.z * reach;
-      value += 0.9 * (1.0 - ripple.z) * cos(d / rippleWidth * 1.8) * exp(-(d * d) / (2.0 * rippleWidth * rippleWidth));
+      float d = length(point - ripple.xy) - ripple.z * uReach;
+      value += 0.9 * (1.0 - ripple.z) * cos(d / uRippleWidth * 1.8) * exp(-(d * d) / (2.0 * uRippleWidth * uRippleWidth));
     }
   }
-  value *= amount;
-  float level = (value + range) / step;
+  value *= uAmount;
+  float level = (value + uRange) / uStep;
   float nearest = floor(level + 0.5);
   float slope = length(vec2(dFdx(level), dFdy(level)));
   float pixels = abs(level - nearest) / max(slope, 1e-6);
   bool major = mod(nearest, 5.0) == 0.0;
-  float width = (major ? 1.5 : 1.0) * dpr;
+  float width = (major ? 1.5 : 1.0) * uDpr;
   float alpha = slope > 1e-6 ? clamp(width * 0.5 + 0.5 - pixels, 0.0, 1.0) * (major ? 0.85 : 0.4) : 0.0;
-  gl_FragColor = vec4(color * alpha, alpha);
+  gl_FragColor = vec4(uColor * alpha, alpha);
 }
 `;
 
-        const canvas = document.getElementById("topography");
-        const reduceMotion = window.matchMedia(
-          "(prefers-reduced-motion: reduce)",
-        ).matches;
+        const PERMUTATION = (() => {
+          const table = Array.from({ length: 256 }, (_, i) => i);
+          let seed = 1013;
+          for (let i = 255; i > 0; i--) {
+            seed = (seed * 16807) % 2147483647;
+            const j = seed % (i + 1);
+            [table[i], table[j]] = [table[j], table[i]];
+          }
+          return Uint8Array.from([...table, ...table]);
+        })();
 
-        const gl = canvas.getContext("webgl", {
-          premultipliedAlpha: true,
-          preserveDrawingBuffer: true,
-          antialias: false,
-        });
-
-        // ---- Easing (cubic-bezier) -------------------------------------
+        /* =========================================================
+         * Easing & spring
+         * ======================================================= */
         function cubicBezier(x1, y1, x2, y2) {
           const A = (a, b) => 1 - 3 * b + 3 * a;
           const B = (a, b) => 3 * b - 6 * a;
           const C = (a) => 3 * a;
           const calc = (t, a, b) => ((A(a, b) * t + B(a, b)) * t + C(a)) * t;
-          const slope = (t, a, b) => 3 * A(a, b) * t * t + 2 * B(a, b) * t + C(a);
+          const slope = (t, a, b) =>
+            3 * A(a, b) * t * t + 2 * B(a, b) * t + C(a);
           return (x) => {
             if (x <= 0) return 0;
             if (x >= 1) return 1;
@@ -234,7 +619,6 @@ void main() {
         const easeRise = cubicBezier(0.16, 1, 0.3, 1);
         const easeRipple = cubicBezier(0.25, 0.4, 0.45, 1);
 
-        // ---- Spring sederhana (pengganti motion) -----------------------
         function spring(value, stiffness, damping) {
           return { value, target: value, velocity: 0, stiffness, damping };
         }
@@ -249,262 +633,304 @@ void main() {
           }
         }
 
-        // ---- State -----------------------------------------------------
-        const state = {
-          width: 0,
-          height: 0,
-          dpr: 1,
-          time: 0,
-          started: 0,
-          rise: reduceMotion ? 1 : 0,
-          hill: spring(0, 120, 20),
-          hillY: spring(0, 120, 20),
-          raised: spring(0, 80, 18),
-          ripples: [],
+        /* =========================================================
+         * Scene: hero
+         * ======================================================= */
+        const heroCanvas = document.querySelector('[data-scene="hero"]');
+        const hero = makeScene(heroCanvas, HERO_FRAG, []);
+        if (hero) {
+          hero.draw = () => {
+            const { gl, u } = hero;
+            gl.uniform2f(u.uRes, hero.canvas.width, hero.canvas.height);
+            gl.uniform1f(u.uTime, hero.time);
+            gl.drawArrays(gl.TRIANGLES, 0, 3);
+          };
+        }
+
+        /* =========================================================
+         * Scene: awan
+         * ======================================================= */
+        const cloudCanvas = document.querySelector('[data-scene="clouds"]');
+        const cloud = makeScene(cloudCanvas, CLOUD_FRAG, []);
+        if (cloud) {
+          cloud.draw = () => {
+            const { gl, u } = cloud;
+            gl.uniform2f(u.uRes, cloud.canvas.width, cloud.canvas.height);
+            gl.uniform1f(u.uTime, cloud.time);
+            gl.drawArrays(gl.TRIANGLES, 0, 3);
+          };
+        }
+
+        /* =========================================================
+         * Scene: terrain
+         * ======================================================= */
+        const terrainCanvas = document.querySelector('[data-scene="terrain"]');
+        const terrainSection = document.getElementById("terrain");
+        const TOPO = {
+          feature: 280,
+          range: 0.95,
+          hillRadius: 90,
+          rippleWidth: 60,
+          levels: 16,
+          speed: 1,
+          color: [0x6e / 255, 0xe7 / 255, 0xa0 / 255],
         };
 
-        if (reduceMotion) state.raised.value = 0;
+        const terrain = makeScene(
+          terrainCanvas,
+          TOPO_FRAG,
+          [
+            "uDpr",
+            "uFeature",
+            "uZ",
+            "uStep",
+            "uRange",
+            "uAmount",
+            "uLift",
+            "uHillRadius",
+            "uHill",
+            "uRipples",
+            "uReach",
+            "uRippleWidth",
+            "uColor",
+          ],
+          { alpha: true },
+        );
 
-        const toRgb = (hex) => {
-          const v = parseInt(hex.slice(1), 16);
-          return [((v >> 16) & 255) / 255, ((v >> 8) & 255) / 255, (v & 255) / 255];
-        };
-        const LINE_RGB = toRgb(LINE_COLOR);
+        if (terrain) {
+          const gl = terrain.gl;
 
-        // ---- Renderer WebGL --------------------------------------------
-        let render = null;
+          // Tekstur permutation untuk noise 3D di shader.
+          const texture = gl.createTexture();
+          gl.activeTexture(gl.TEXTURE0);
+          gl.bindTexture(gl.TEXTURE_2D, texture);
+          gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+          gl.texImage2D(
+            gl.TEXTURE_2D,
+            0,
+            gl.LUMINANCE,
+            256,
+            1,
+            0,
+            gl.LUMINANCE,
+            gl.UNSIGNED_BYTE,
+            PERMUTATION.subarray(0, 256),
+          );
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+          gl.uniform1i(terrain.u.permutation, 0);
 
-        if (gl && gl.getExtension("OES_standard_derivatives")) {
-          const compile = (type, source) => {
-            const shader = gl.createShader(type);
-            gl.shaderSource(shader, source);
-            gl.compileShader(shader);
-            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-              console.error(gl.getShaderInfoLog(shader));
-              return null;
-            }
-            return shader;
+          gl.uniform1f(terrain.u.uRange, TOPO.range);
+          gl.uniform1f(terrain.u.uHillRadius, TOPO.hillRadius);
+          gl.uniform1f(terrain.u.uRippleWidth, TOPO.rippleWidth);
+          gl.uniform1f(
+            terrain.u.uStep,
+            (2 * TOPO.range) / TOPO.levels,
+          );
+          gl.uniform3f(
+            terrain.u.uColor,
+            TOPO.color[0],
+            TOPO.color[1],
+            TOPO.color[2],
+          );
+          gl.enable(gl.BLEND);
+          gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+          gl.clearColor(0, 0, 0, 0);
+
+          const state = {
+            riseStart: null,
+            hill: spring(0, 120, 20),
+            hillY: spring(0, 120, 20),
+            raised: spring(0, 80, 18),
+            ripples: [],
           };
 
-          const vertex = compile(gl.VERTEX_SHADER, VERTEX);
-          const fragment = compile(gl.FRAGMENT_SHADER, FRAGMENT);
-          const program = gl.createProgram();
-          gl.attachShader(program, vertex);
-          gl.attachShader(program, fragment);
-          gl.linkProgram(program);
+          const rippleData = new Float32Array(16);
 
-          if (gl.getProgramParameter(program, gl.LINK_STATUS)) {
-            gl.useProgram(program);
-
-            const buffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-            gl.bufferData(
-              gl.ARRAY_BUFFER,
-              new Float32Array([-1, -1, 3, -1, -1, 3]),
-              gl.STATIC_DRAW,
-            );
-            const position = gl.getAttribLocation(program, "position");
-            gl.enableVertexAttribArray(position);
-            gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
-
-            const texture = gl.createTexture();
-            gl.bindTexture(gl.TEXTURE_2D, texture);
-            gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
-            gl.texImage2D(
-              gl.TEXTURE_2D,
-              0,
-              gl.LUMINANCE,
-              256,
-              1,
-              0,
-              gl.LUMINANCE,
-              gl.UNSIGNED_BYTE,
-              PERMUTATION.subarray(0, 256),
-            );
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-
-            const u = (name) => gl.getUniformLocation(program, name);
-            const uniforms = {
-              permutation: u("permutation"),
-              size: u("size"),
-              dpr: u("dpr"),
-              feature: u("feature"),
-              z: u("z"),
-              step: u("step"),
-              range: u("range"),
-              amount: u("amount"),
-              lift: u("lift"),
-              hillRadius: u("hillRadius"),
-              hill: u("hill"),
-              ripples: u("ripples") || u("ripples[0]"),
-              reach: u("reach"),
-              rippleWidth: u("rippleWidth"),
-              color: u("color"),
-            };
-
-            gl.uniform1i(uniforms.permutation, 0);
-            gl.uniform1f(uniforms.range, RANGE);
-            gl.uniform1f(uniforms.hillRadius, HILL_RADIUS);
-            gl.uniform1f(uniforms.rippleWidth, RIPPLE_WIDTH);
-
-            const rippleData = new Float32Array(16);
-            const step = (2 * RANGE) / LEVELS;
-
-            render = () => {
-              const w = Math.max(1, Math.round(state.width * state.dpr));
-              const h = Math.max(1, Math.round(state.height * state.dpr));
-              gl.viewport(0, 0, w, h);
-              gl.uniform2f(uniforms.size, w, h);
-              gl.uniform1f(uniforms.dpr, state.dpr);
-              gl.uniform1f(uniforms.feature, FEATURE * SCALE);
-              gl.uniform1f(uniforms.z, state.time * 0.00005 * SPEED);
-              gl.uniform1f(uniforms.step, step);
-              gl.uniform1f(uniforms.amount, state.rise);
-              gl.uniform1f(
-                uniforms.lift,
-                state.raised.value * PEAK * 1.5,
-              );
-              gl.uniform2f(
-                uniforms.hill,
-                state.hill.value,
-                state.hillY.value,
-              );
-
-              rippleData.fill(0);
-              const recent = state.ripples.slice(-4);
-              for (let i = 0; i < recent.length; i++) {
-                const r = recent[i];
-                rippleData[i * 4] = r.x;
-                rippleData[i * 4 + 1] = r.y;
-                rippleData[i * 4 + 2] = r.progress;
-                rippleData[i * 4 + 3] = 1;
-              }
-              gl.uniform4fv(uniforms.ripples, rippleData);
-              gl.uniform1f(
-                uniforms.reach,
-                Math.hypot(state.width, state.height) * 0.8,
-              );
-              gl.uniform3f(uniforms.color, LINE_RGB[0], LINE_RGB[1], LINE_RGB[2]);
-
-              gl.clearColor(0, 0, 0, 0);
-              gl.clear(gl.COLOR_BUFFER_BIT);
-              gl.drawArrays(gl.TRIANGLES, 0, 3);
-            };
-          }
-        }
-
-        if (!render) {
-          // WebGL tidak tersedia: biarkan latar gradien CSS saja.
-          canvas.remove();
-        }
-
-        // ---- Resize ----------------------------------------------------
-        function resize() {
-          state.width = window.innerWidth;
-          state.height = window.innerHeight;
-          state.dpr = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
-          if (canvas.isConnected) {
-            canvas.width = Math.max(1, Math.round(state.width * state.dpr));
-            canvas.height = Math.max(1, Math.round(state.height * state.dpr));
-          }
-          if (state.hill.value === 0) {
-            state.hill.value = state.hill.target = state.width / 2;
-            state.hillY.value = state.hillY.target = state.height / 2;
-          }
-        }
-
-        // ---- Interaksi -------------------------------------------------
-        let pointerInside = false;
-
-        window.addEventListener("pointermove", (event) => {
-          if (reduceMotion) return;
-          pointerInside = true;
-          state.hill.target = event.clientX;
-          state.hillY.target = event.clientY;
-          state.raised.target = 1;
-        });
-
-        window.addEventListener("pointerleave", () => {
-          pointerInside = false;
-          state.raised.target = 0;
-        });
-
-        window.addEventListener("blur", () => {
-          pointerInside = false;
-          state.raised.target = 0;
-        });
-
-        window.addEventListener("pointerdown", (event) => {
-          if (reduceMotion) return;
-          state.hill.target = event.clientX;
-          state.hillY.target = event.clientY;
-          state.ripples.push({
-            x: event.clientX,
-            y: event.clientY,
-            start: performance.now(),
-            progress: 0,
-          });
-          state.ripples = state.ripples.slice(-4);
-        });
-
-        // ---- Loop ------------------------------------------------------
-        let raf = 0;
-        let last = 0;
-        let visible = !document.hidden;
-
-        document.addEventListener("visibilitychange", () => {
-          visible = !document.hidden;
-          if (visible) {
-            last = 0;
-            if (render) raf = requestAnimationFrame(frame);
-          } else {
-            cancelAnimationFrame(raf);
-          }
-        });
-
-        function updateRipples(now) {
-          state.ripples = state.ripples.filter(
-            (r) => now - r.start < 2600,
-          );
-          for (const r of state.ripples) {
-            const t = Math.min(1, (now - r.start) / 2600);
-            r.progress = easeRipple(t);
-          }
-        }
-
-        function frame(now) {
-          const delta = last ? Math.min(now - last, 64) : 16;
-          last = now;
-          const dt = delta / 1000;
-
-          if (!reduceMotion) {
-            if (state.rise < 1) {
-              state.rise = easeRise(Math.min(1, (now - state.started) / 1800));
+          terrain.draw = (dt) => {
+            if (state.riseStart === null) state.riseStart = terrain.time;
+            if (state.hill.value === 0) {
+              state.hill.value = state.hill.target = terrain.w / 2;
+              state.hillY.value = state.hillY.target = terrain.h / 2;
             }
-            state.time += delta;
-            stepSpring(state.hill, dt);
-            stepSpring(state.hillY, dt);
-            stepSpring(state.raised, dt);
-            updateRipples(now);
+
+            let rise = 1;
+            if (!reduceMotion) {
+              rise = easeRise(
+                Math.min(1, (terrain.time - state.riseStart) / 1.8),
+              );
+              stepSpring(state.hill, dt);
+              stepSpring(state.hillY, dt);
+              stepSpring(state.raised, dt);
+              state.ripples = state.ripples.filter(
+                (r) => terrain.time - r.start < 2.6,
+              );
+              for (const r of state.ripples) {
+                r.progress = easeRipple(
+                  Math.min(1, (terrain.time - r.start) / 2.6),
+                );
+              }
+            } else {
+              state.raised.value = 0;
+            }
+
+            rippleData.fill(0);
+            const recent = state.ripples.slice(-4);
+            for (let i = 0; i < recent.length; i++) {
+              rippleData[i * 4] = recent[i].x;
+              rippleData[i * 4 + 1] = recent[i].y;
+              rippleData[i * 4 + 2] = recent[i].progress;
+              rippleData[i * 4 + 3] = 1;
+            }
+
+            gl.uniform2f(terrain.u.uRes, terrain.canvas.width, terrain.canvas.height);
+            gl.uniform1f(terrain.u.uDpr, terrain.dpr);
+            gl.uniform1f(terrain.u.uFeature, TOPO.feature);
+            gl.uniform1f(terrain.u.uZ, terrain.time * 0.05 * TOPO.speed);
+            gl.uniform1f(terrain.u.uAmount, rise);
+            gl.uniform1f(terrain.u.uLift, state.raised.value * 1.5);
+            gl.uniform2f(
+              terrain.u.uHill,
+              state.hill.value,
+              state.hillY.value,
+            );
+            gl.uniform4fv(terrain.u.uRipples, rippleData);
+            gl.uniform1f(
+              terrain.u.uReach,
+              Math.hypot(terrain.w, terrain.h) * 0.8,
+            );
+
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            gl.drawArrays(gl.TRIANGLES, 0, 3);
+          };
+
+          // Interaksi hanya saat kursor di atas section terrain.
+          const localPoint = (event) => {
+            const rect = terrain.canvas.getBoundingClientRect();
+            return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+          };
+
+          terrainSection.addEventListener("pointermove", (event) => {
+            if (reduceMotion) return;
+            const point = localPoint(event);
+            state.hill.target = point.x;
+            state.hillY.target = point.y;
+            state.raised.target = 1;
+          });
+
+          terrainSection.addEventListener("pointerleave", () => {
+            state.raised.target = 0;
+          });
+
+          terrainSection.addEventListener("pointerdown", (event) => {
+            if (reduceMotion) return;
+            const point = localPoint(event);
+            state.hill.target = point.x;
+            state.hillY.target = point.y;
+            state.ripples.push({
+              x: point.x,
+              y: point.y,
+              start: terrain.time,
+              progress: 0,
+            });
+            state.ripples = state.ripples.slice(-4);
+          });
+        }
+
+        /* =========================================================
+         * Loop tunggal: hanya menggambar scene yang terlihat
+         * ======================================================= */
+        let raf = 0;
+        let last = performance.now();
+
+        function tick(now) {
+          raf = requestAnimationFrame(tick);
+          const dt = Math.min(now - last, 64) / 1000;
+          last = now;
+          if (document.hidden) return;
+
+          for (const scene of scenes) {
+            if (!scene.visible || !scene.draw) continue;
+            fit(scene);
+            if (!reduceMotion) scene.time += dt;
+
+            if (reduceMotion) {
+              if (!scene.dirty) continue;
+              scene.dirty = false;
+            }
+            scene.draw(dt);
           }
-
-          if (render) render();
-          raf = requestAnimationFrame(frame);
         }
 
-        resize();
-        window.addEventListener("resize", resize);
+        /* =========================================================
+         * Visibilitas & reveal
+         * ======================================================= */
+        const sceneByCanvas = new Map();
+        for (const scene of scenes) sceneByCanvas.set(scene.canvas, scene);
 
-        if (reduceMotion) {
-          state.started = 0;
-          if (render) render();
-        } else {
-          state.started = performance.now();
-          if (render) raf = requestAnimationFrame(frame);
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              const scene = sceneByCanvas.get(entry.target);
+              if (!scene) continue;
+              scene.visible = entry.isIntersecting;
+              scene.dirty = true;
+            }
+          },
+          { threshold: 0 },
+        );
+        for (const scene of scenes) io.observe(scene.canvas);
+
+        const revealObserver = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) entry.target.classList.add("is-visible");
+            }
+          },
+          { threshold: 0.25 },
+        );
+        document
+          .querySelectorAll(".reveal")
+          .forEach((el) => revealObserver.observe(el));
+
+        window.addEventListener("resize", () => {
+          for (const scene of scenes) {
+            fit(scene);
+            scene.dirty = true;
+          }
+        });
+
+        /* =========================================================
+         * Parallax ringan di hero
+         * ======================================================= */
+        const heroInner = document.querySelector(".hero__inner");
+        const scrollHint = document.querySelector(".scroll-hint");
+        let scrollQueued = false;
+
+        function onScroll() {
+          if (scrollQueued || reduceMotion) return;
+          scrollQueued = true;
+          requestAnimationFrame(() => {
+            const progress = Math.min(
+              1,
+              window.scrollY / (window.innerHeight * 0.85),
+            );
+            heroInner.style.transform = `translate3d(0, ${progress * -70}px, 0)`;
+            heroInner.style.opacity = String(1 - progress);
+            scrollHint.style.opacity = String(Math.max(0, 1 - progress * 2));
+            scrollQueued = false;
+          });
         }
+
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+
+        // Mulai loop.
+        raf = requestAnimationFrame(tick);
+
+        window.addEventListener("pagehide", () => cancelAnimationFrame(raf));
       })();
     </script>
   </body>
